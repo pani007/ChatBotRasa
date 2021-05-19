@@ -215,3 +215,24 @@
     - send_mail
 * goodbye
     - utter_goodbye
+
+
+## train_story_13
+* greet
+    - utter_greet
+* restaurant_search{"location": "Bubaneshwar"}
+    - slot{"location": "Bubaneshwar"}
+    - action_check_loc
+    - utter_ask_cuisine
+* restaurant_search{"cuisine": "Italian"}
+    - slot{"cuisine": "Italian"}
+    - utter_ask_price
+* restaurant_search{"priceHigh": "700"}
+    - slot{"priceHigh": "700"}
+    - action_search_restaurants
+    - utter_query_mail
+* ask_mail:{"mailopt": "no"}
+    - slot{"mailopt": "no"}
+    - send_mail
+* goodbye
+    - utter_goodbye

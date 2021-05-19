@@ -101,7 +101,6 @@
 - Show me the [chinese](cuisine) restaurants
 - [chennai](location)
 - Show me all the [North Indian](cuisine) Restaurants
-- Rs. [300](priceLow) to [700](priceHigh)
 - [Pune](location)
 
 ## intent:ask_mail:
@@ -116,6 +115,7 @@
 - [rao.msv@gmail.com](email)
 - [panindra.mysorekar@gmail.com](email)
 - [yes](mailopt)[yes](mailopt)
+
 
 ## synonym:4
 - four
