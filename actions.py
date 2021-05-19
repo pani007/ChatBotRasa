@@ -34,7 +34,7 @@ from rasa_sdk import Action, Tracker
 import numpy as np
 from rasa_sdk.events import SlotSet
 import pandas as pd
-df = pd.read_csv("C:/Users/raoms_y121yee/Upgrad/zomato.csv",encoding='latin1')
+df = pd.read_csv("./zomato.csv",encoding='latin1')
 
 
 ###################################################################################################################################
@@ -42,6 +42,21 @@ df = pd.read_csv("C:/Users/raoms_y121yee/Upgrad/zomato.csv",encoding='latin1')
 ### We will re use the function to make code neat
 
 ####################################################################################################################################
+
+
+################################################################################################################################
+## This token is for login. I have saved username and password in a csv file
+##############################################################################################################################
+creds = pd.read_csv("./access.csv")
+def authenticate(creds = creds):
+    user_name = creds.iloc[0,0]
+    password = creds.iloc[0,1]
+    print(user_name,password)
+    return user_name,password
+
+
+
+
 
 
 def generate_details(loc,cusine,rows,df=df,price_low=None,price_high=None,isEmail=False):
@@ -127,7 +142,7 @@ class ValidateLocation(Action):
         return 'action_check_loc'
 
     def run(self,dispatcher,tracker,domain):
-        tier_1 =  ['Ahmedabad', 'Bangalore', 'Chennai', 'Delhi', 'Hyderabad', 'Kolkata', 'Mumbai' ,'Pune']
+        tier_1 =  ['Ahmedabad', 'Bangalore', 'Chennai', 'New Delhi', 'Hyderabad', 'Kolkata', 'Mumbai' ,'Pune']
         tier_1 = list(map(lambda x: x.lower(),tier_1))
         tier_2 = "Agra, Ajmer, Aligarh, Amravati, Amritsar, Asansol, Aurangabad, Bareilly, Belgaum, Bhavnagar, Bhiwandi, Bhopal, Bhubaneswar, Bikaner, Bilaspur, Bokaro Steel City, Chandigarh, Coimbatore, Cuttack, Dehradun, Dhanbad, Bhilai, Durgapur, Dindigul, Erode, Faridabad, Firozabad, Ghaziabad, Gorakhpur, Gulbarga, Guntur, Gwalior, Gurgaon, Guwahati, Hamirpur, Hubli–Dharwad, Indore, Jabalpur, Jaipur, Jalandhar, Jammu, Jamnagar, Jamshedpur, Jhansi, Jodhpur, Kakinada, Kannur, Kanpur, Karnal, Kochi, Kolhapur, Kollam, Kozhikode, Kurnool, Ludhiana, Lucknow, Madurai, Malappuram, Mathura, Mangalore, Meerut, Moradabad, Mysore, Nagpur, Nanded, Nashik, Nellore, Noida, Patna, Pondicherry, Purulia, Prayagraj, Raipur, Rajkot, Rajahmundry, Ranchi, Rourkela, Ratlam, Salem, Sangli, Shimla, Siliguri, Solapur, Srinagar, Surat, Thanjavur, Thiruvananthapuram, Thrissur, Tiruchirappalli, Tirunelveli, Tiruvannamalai, Ujjain, Bijapur, Vadodara, Varanasi, Vasai-Virar City, Vijayawada, Visakhapatnam, Vellore , Warangal"
         tier_2 = tier_2.lower().split(',')
@@ -200,11 +215,15 @@ class SmtpMail(Action):
                         
                         msg["Subject"] = f"Restaurants in {loc} with {cusine}"
                         msg["To"] = to
+
+                        ### Retrive creds
+                        user_name,password = authenticate(creds=creds)
+
                         msg.set_content(message)
                         smtpObj = smtplib.SMTP("smtp.gmail.com",587)
                         smtpObj.ehlo()
                         smtpObj.starttls()
-                        smtpObj.login("zomatosearch@gmail.com","Zomato123")
+                        smtpObj.login(user_name,password)
                     
                         
                         smtpObj.send_message(msg)

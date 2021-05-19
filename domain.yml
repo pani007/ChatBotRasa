@@ -3,10 +3,10 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- 'ask_mail:'
 - restaurant_search
-- goodbye
 - greet
+- 'ask_mail:'
+- goodbye
 - affirm
 - stop
 - ask_mail
